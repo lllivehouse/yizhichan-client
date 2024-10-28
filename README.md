@@ -1,1 +1,1 @@
-# yizhichan-sdk
+# yizhichan client
