@@ -17,7 +17,7 @@
 ```
 ### Annotation Enable Switch
 ```java
-import com.ac.apaas.serverless.sdk.annotation.EnableServerless;
+import tech.yizhichan.client.annotation.EnableServerless;
 
 @SpringBootApplication(scanBasePackages = ["xxx.xxx"])
 @EnableServerless
@@ -44,20 +44,20 @@ spring:
 # Whether to enable serverless
 apaas.serverless.enable=true
 # Tenant name
-apaas.serverless.namespace=xxx
-# Serverless backend service address
+apaas.serverless.namespe=xxx
+# Serverless bkend service address
 openapi.client.app.serverless.host=https://xxx
 # Serverless API version
 openapi.client.app.serverless.version=api/v1
 ```
 
 ### 1. Bean Usage
-#### 1.1 Create a new class in the management backend
+#### 1.1 Create a new class in the management bkend
 - particular instruction: For executing openfeign calls on the hosted service, you need to add the following annotation on the feignClient property injection to convert the feign call into a generic call. This annotation only serves as code translation and will be discarded during compilation.
 ```java
-@org.springframework.beans.factory.annotation.Resource
-@com.ac.apaas.serverless.sdk.annotation.GenericFeignClientMapper(name = "xxxService", value = {
-    @com.ac.apaas.serverless.sdk.annotation.GenericFeignClientMethodMapper(sourceMethodName = "test", httpMethod = "post", targetMethodUrl = "/xxx/xxx")
+@org.springframework.beans.ftory.annotation.Resource
+@tech.yizhichan.client.annotation.GenericFeignClientMapper(name = "xxxService", value = {
+    @tech.yizhichan.client.annotation.GenericFeignClientMethodMapper(sourceMethodName = "test", httpMethod = "post", targetMethodUrl = "/xxx/xxx")
 })
 private ServiceFeignClient serviceFeignClient;
 ```
@@ -67,7 +67,7 @@ private ServiceFeignClient serviceFeignClient;
 - At runtime, the method's implementation will be dynamically replaced by script code.
 
 #### 2.2 Annotation Parameter Details
-- <font color="red">name</font>: Function alias, mandatory parameter, must be unique under the same tenant. It should correspond one-to-one with the function name created in the console function management. It is recommended to use packagename.classname.methodname to ensure uniqueness.
+- <span style="color:red;">name</span>: Function alias, mandatory parameter, must be unique under the same tenant. It should correspond one-to-one with the function name created in the console function management. It is recommended to use packagename.classname.methodname to ensure uniqueness.
 
 - isAsync: Whether to execute asynchronously, default is false.
 
@@ -83,7 +83,7 @@ private ServiceFeignClient serviceFeignClient;
 
 - onBefore: Pre-processing before the action method is executed.
 
-- action: The actual function logic to be executed. To improve stability, the method execution timeout must be specified using the @TimedInterrupt annotation, in seconds. <font color="red">The return type of action must be consistent with the original method's return type</font>.
+- action: The actual function logic to be executed. To improve stability, the method execution timeout must be specified using the @TimedInterrupt annotation, in seconds. <span style="color:red;">The return type of action must be consistent with the original method's return type</span>.
 
 - onException: Handling when the action method execution encounters an exception.
 
@@ -161,17 +161,17 @@ In the console, find the version you want to roll back to, click the enable butt
 
 ### 3. Hotfix Usage
 #### 3.1 Create a hotfix task in the console
-- <font color="red">namespace</font>: Tenant name, mandatory.
+- <span style="color:red;">namespace</span>: Tenant name, mandatory.
 
-- <font color="red">appname</font>: Application name under the tenant, must match the ${spring.application.name} configuration item, mandatory.
+- <span style="color:red;">appname</span>: Application name under the tenant, must match the ${spring.application.name} configuration item, mandatory.
 
-- <font color="red">classpath</font>: Class path to be fixed, mandatory.
+- <span style="color:red;">classpath</span>: Class path to be fixed, mandatory.
 
-- <font color="red">methodName</font>: Class method name to be fixed, mandatory.
+- <span style="color:red;">methodName</span>: Class method name to be fixed, mandatory.
 
-- <font color="red">returnType</font>: Method return type class path, mandatory.
+- <span style="color:red;">returnType</span>: Method return type class path, mandatory.
 
-- <font color="red">code</font>: Groovy code, mandatory.
+- <span style="color:red;">code</span>: Groovy code, mandatory.
 
 - argNames: Parameter name array for the fix code.
 
@@ -186,7 +186,7 @@ In the console, find the version you want to roll back to, click the enable butt
 
 - The hotfix method must be named hotfix.
 
-- <font color="red">The return type of the hotfix method must be consistent with the original method's return type</font>.
+- <span style="color:red;">The return type of the hotfix method must be consistent with the original method's return type</span>.
 
 - The parameters of the hotfix method can be different from the original method. If the parameters are specified in the console, they must be referenced in a Map<String, Object> structure, which will also include application-level environment variables.
 
