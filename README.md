@@ -67,7 +67,7 @@ private ServiceFeignClient serviceFeignClient;
 - At runtime, the method's implementation will be dynamically replaced by script code.
 
 #### 2.2 Annotation Parameter Details
-- name: Function alias, mandatory parameter, must be unique under the same tenant. It should correspond one-to-one with the function name created in the console function management. It is recommended to use packagename.classname.methodname to ensure uniqueness.
+- <font color="red">name</font>: Function alias, mandatory parameter, must be unique under the same tenant. It should correspond one-to-one with the function name created in the console function management. It is recommended to use packagename.classname.methodname to ensure uniqueness.
 
 - isAsync: Whether to execute asynchronously, default is false.
 
@@ -83,13 +83,17 @@ private ServiceFeignClient serviceFeignClient;
 
 - onBefore: Pre-processing before the action method is executed.
 
-- action: The actual function logic to be executed. To improve stability, the method execution timeout must be specified using the @TimedInterrupt annotation, in seconds. The return type of action must be consistent with the original method's return type.
+- action: The actual function logic to be executed. To improve stability, the method execution timeout must be specified using the @TimedInterrupt annotation, in seconds. <font color="red">The return type of action must be consistent with the original method's return type</font>.
 
 - onException: Handling when the action method execution encounters an exception.
 
 - onAfter: Post-processing after the action method is executed.Parameter list Map<String, Object> map:
 
-##### 2.3.3 The framework will automatically merge the original method's parameter list into the map structure. For example, if the original method is void print(int a, BigDecimal b, ApiResponse c), the map will have keys a, b, c. The environment variables of the application under the tenant will also be loaded. Environment variables are set and managed in the console.
+##### 2.3.3 The framework will automatically merge the original method's parameter list into the map structure. For example, if the original method is:
+```java
+void print(int a, BigDecimal b, ApiResponse c)
+```
+the map will have keys a, b, c. The environment variables of the application under the tenant will also be loaded. Environment variables are set and managed in the console.
 ```java
 import com.slid.live.slot.component.api.ApiResponse
 import groovy.transform.TimedInterrupt
@@ -157,17 +161,17 @@ In the console, find the version you want to roll back to, click the enable butt
 
 ### 3. Hotfix Usage
 #### 3.1 Create a hotfix task in the console
-- namespace: Tenant name, mandatory.
+- <font color="red">namespace</font>: Tenant name, mandatory.
 
-- appname: Application name under the tenant, must match the ${spring.application.name} configuration item, mandatory.
+- <font color="red">appname</font>: Application name under the tenant, must match the ${spring.application.name} configuration item, mandatory.
 
-- classpath: Class path to be fixed, mandatory.
+- <font color="red">classpath</font>: Class path to be fixed, mandatory.
 
-- methodName: Class method name to be fixed, mandatory.
+- <font color="red">methodName</font>: Class method name to be fixed, mandatory.
 
-- returnType: Method return type class path, mandatory.
+- <font color="red">returnType</font>: Method return type class path, mandatory.
 
-- code: Groovy code, mandatory.
+- <font color="red">code</font>: Groovy code, mandatory.
 
 - argNames: Parameter name array for the fix code.
 
@@ -178,21 +182,26 @@ In the console, find the version you want to roll back to, click the enable butt
 - description: Description.
 
 #### 3.2 Hotfix Script Specification
-The code logic must be wrapped in a class.
+- The code logic must be wrapped in a class.
 
-The hotfix method must be named hotfix.
+- The hotfix method must be named hotfix.
 
-The return type of the hotfix method must be consistent with the original method's return type.
+- <font color="red">The return type of the hotfix method must be consistent with the original method's return type</font>.
 
-The parameters of the hotfix method can be different from the original method. If the parameters are specified in the console, they must be referenced in a Map<String, Object> structure, which will also include application-level environment variables.
+- The parameters of the hotfix method can be different from the original method. If the parameters are specified in the console, they must be referenced in a Map<String, Object> structure, which will also include application-level environment variables.
 
-#### 3.3 Code Example
-##### 3.3.1 Original Code
+- Code Example
+##### Original Code
 ```java
-System.out.println("hello world");
-return ResponseEntity.ok(msg);
+@Service
+public class TestService {
+    public ResponseEntity<String> printForGroovyTest(String msg) {
+        System.out.println("hello world");
+        return ResponseEntity.ok(msg);
+    }
+}
 ```
-##### 3.3.2 Groovy Script for Hotfix
+##### Groovy Script for Hotfix
 ```java
 import groovy.transform.TimedInterrupt
 
@@ -206,5 +215,5 @@ class GroovyHotfixTest {
 }
 ```
 
-#### 3.4 Publish
+#### 3.3 Publish
 Click the publish button to publish the hotfix.
