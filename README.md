@@ -95,7 +95,6 @@ void print(int a, BigDecimal b, ApiResponse c)
 ```
 the map will have keys a, b, c. The environment variables of the application under the tenant will also be loaded. Environment variables are set and managed in the console.
 ```java
-import com.slid.live.slot.component.api.ApiResponse
 import groovy.transform.TimedInterrupt
 
 class GroovyFunctionTest {
